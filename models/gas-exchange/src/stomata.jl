@@ -34,9 +34,9 @@ end
 end
 
 @system StomataBallBerry(StomataBase, StomataTuzet) begin
-    # Ball-Berry model parameters from Miner and Bauerle 2017, used to be 0.04 and 4.0, respectively (2018-09-04: KDY)
-    g0 => 0.017 ~ preserve(u"mol/m^2/s/bar" #= H2O =#, parameter)
-    g1 => 4.53 ~ preserve(parameter)
+    # Generic Ball-Berry model parameters for C3 plants based on Ball (1988) PhD thesis, b=0.03 and m=10.0 (2021-02-10: SHK)
+    g0 => 0.03 ~ preserve(u"mol/m^2/s/bar" #= H2O =#, parameter)
+    g1 => 10.0 ~ preserve(parameter)
 
     #HACK: avoid scaling issue with dimensionless unit
     hs(g0, g1, gb, A_net, Cs, fΨv, RH): relative_humidity_at_leaf_surface => begin
@@ -53,8 +53,9 @@ end
 end
 
 @system StomataMedlyn(StomataBase, StomataTuzet) begin
-    g0 => 0.02 ~ preserve(u"mol/m^2/s/bar" #= H2O =#, parameter)
-    g1 => 4.0 ~ preserve(u"√kPa", parameter)
+    # Approximate values based on the B-B parameters above (2021-02-10, SHK) 
+    g0 => 0.03 ~ preserve(u"mol/m^2/s/bar" #= H2O =#, parameter)
+    g1 => 9.0 ~ preserve(u"√kPa", parameter)
 
     wa(ea=vp.ea, T_air, RH): vapor_pressure_at_air => ea(T_air, RH) ~ track(u"kPa")
     wi(es=vp.es, T): vapor_pressure_at_intercellular_space => es(T) ~ track(u"kPa")
